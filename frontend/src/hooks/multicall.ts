@@ -1,11 +1,9 @@
 import { Contract } from 'ethers';
 import { readProvider } from './useEthers';
 
-// Multicall3 is deployed at the same canonical address on every chain
-// (including Sepolia). It lets us collapse N separate `eth_call`s into ONE,
-// which is the single biggest win against rate-limited public RPCs: a page
-// that previously fired ~90 individual reads (one per ticket / round) now
-// sends a single request, so the FallbackProvider never trips a 429 burst.
+// Multicall3 lives at the same canonical address on every chain (incl. Sepolia).
+// Collapsing N `eth_call`s into one is the biggest win against rate-limited
+// public RPCs - a page that fired ~90 reads now sends a single request.
 const MULTICALL3_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11';
 
 const MULTICALL3_ABI = [

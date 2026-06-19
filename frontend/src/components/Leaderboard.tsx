@@ -16,11 +16,9 @@ interface Entry {
 
 const SHORT_ADDR = (a: string) => `${a.slice(0, 6)}...${a.slice(-4)}`;
 
-// The board shows the top 5 *distinct* wins. A single winner often claims many
-// identical tickets (same payout), which previously filled all 5 slots with the
-// same row. Collapse by (owner, amount) so each distinct win appears once -
-// keeping the highest tier visible - while still listing two different players
-// who happen to win the same amount as separate entries.
+// Top 5 *distinct* wins. Collapse by (owner, amount) so one winner claiming
+// many identical tickets occupies a single slot, while two different players
+// winning the same amount stay as separate entries.
 function topDistinct(all: Iterable<Entry>): Entry[] {
   const distinct = new Map<string, Entry>();
   for (const e of all) {
@@ -30,11 +28,8 @@ function topDistinct(all: Iterable<Entry>): Entry[] {
   return [...distinct.values()].sort((a, b) => b.amount - a.amount).slice(0, 5);
 }
 
-// Module-level cache that survives remounts and is shared across the 30s
-// refreshes. The history is scanned from DEPLOY_BLOCK exactly ONCE; every
-// subsequent load only queries the handful of new blocks since `scannedTo`.
-// This turns the previous ~11-chunk re-scan-on-every-refresh into a single
-// small getLogs per refresh.
+// Module-level cache shared across remounts and the 30s refreshes. History is
+// scanned from DEPLOY_BLOCK once; later loads only query blocks since `scannedTo`.
 const logCache: { byTicket: Map<string, Entry>; scannedTo: number } = {
   byTicket: new Map(),
   scannedTo: DEPLOY_BLOCK - 1,

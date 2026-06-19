@@ -100,9 +100,9 @@ abstract contract BulgarianTotoStorage {
     uint256 public constant PRICE_6_49_PLUS2 = 9 * 1e6;
 
     // Tier percentages in basis points (10000 = 100%)
-    uint16 public constant PCT_5_35_TIER5 = 1500; // 10%
+    uint16 public constant PCT_5_35_TIER5 = 1500; // 15%
     uint16 public constant PCT_5_35_TIER4 = 100;  // 1%
-    uint16 public constant PCT_5_35_TIER3 = 20;  // 0.2%
+    uint16 public constant PCT_5_35_TIER3 = 20;   // 0.2%
     uint16 public constant PCT_6_49_TIER6 = 5500; // 55%
     uint16 public constant PCT_6_49_TIER5 = 300;  // 3%
     uint16 public constant PCT_6_49_TIER4 = 200;  // 2%

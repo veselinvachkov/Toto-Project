@@ -499,11 +499,9 @@ abstract contract BulgarianTotoLottery is
             uint8 s = r.state;
 
             if (s == uint8(RoundState.Open)) {
-                // Only the current round is ever Open.
-                // Conservative: trigger AT MOST ONE requestDraw per catchUp call.
-                // Caller can re-invoke after Chainlink VRF fulfills the request.
-                // Cascading requestDraws would burn LINK on empty rounds and stack
-                // unfinalizedRounds, blocking LP withdrawals for a long time.
+                // Only the current round is ever Open. Trigger AT MOST ONE requestDraw
+                // per call: cascading draws would burn LINK on empty rounds and stack
+                // unfinalizedRounds, blocking LP withdrawals. Re-invoke after VRF fulfills.
                 if (i == cur && block.timestamp >= r.drawTime) {
                     try this.requestDraw(i) returns (uint256) {
                         actionsExecuted++;

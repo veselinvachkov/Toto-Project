@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console2} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 import {BulgarianToto} from "../src/BulgarianToto.sol";
 import {BulgarianTotoStorage} from "../src/BulgarianTotoStorage.sol";
 import {MockUSDC} from "./mocks/MockUSDC.sol";
@@ -113,13 +113,6 @@ contract BulgarianTotoTest is Test {
 
     function _findNonWinningNumber5_35(uint64 drawnMask) internal pure returns (uint8) {
         for (uint8 i = 1; i <= 35; i++) {
-            if ((drawnMask & (uint64(1) << i)) == 0) return i;
-        }
-        revert("no free");
-    }
-
-    function _findNonWinningNumber6_49(uint64 drawnMask) internal pure returns (uint8) {
-        for (uint8 i = 1; i <= 49; i++) {
             if ((drawnMask & (uint64(1) << i)) == 0) return i;
         }
         revert("no free");

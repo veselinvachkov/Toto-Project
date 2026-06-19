@@ -10,13 +10,10 @@ import { useConnectorClient } from 'wagmi';
 
 const SEPOLIA = Network.from(11155111);
 
-// Several public Sepolia endpoints. A single public RPC rate-limits (HTTP 429)
-// under the app's read bursts - when that happened every read threw and the UI
-// silently fell back to defaults (0 USDC, empty history). A FallbackProvider
-// with quorum 1 sends each request to the highest-priority endpoint and
-// transparently fails over to the next on error/stall, so one node being
-// throttled no longer blanks the page. `staticNetwork` also drops the
-// per-request eth_chainId round-trip.
+// Multiple public Sepolia endpoints behind a quorum-1 FallbackProvider: a
+// single public RPC rate-limits (HTTP 429) under read bursts, which blanked
+// the UI. The provider fails over to the next endpoint on error/stall.
+// `staticNetwork` also drops the per-request eth_chainId round-trip.
 const RPC_URLS = [
   'https://ethereum-sepolia-rpc.publicnode.com',
   'https://sepolia.drpc.org',

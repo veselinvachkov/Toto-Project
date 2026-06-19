@@ -1,9 +1,9 @@
-/// Best-effort decoder for ethers v6 transaction errors. Surfaces friendly,
-/// human-readable messages for known custom errors (lottery contract, USDC,
-/// OpenZeppelin libs, Chainlink VRF) instead of raw 4-byte selectors.
+/// Decodes ethers v6 transaction errors into friendly messages for known
+/// custom errors (lottery, USDC, OpenZeppelin, Chainlink VRF) instead of
+/// raw 4-byte selectors.
 
-/// Map of 4-byte selectors → user-facing messages.
-/// All selectors are lowercase. Computed via keccak256(signature)[:4].
+/// 4-byte selector → user-facing message. Selectors are lowercase
+/// keccak256(signature)[:4].
 const SELECTOR_MESSAGES: Record<string, string> = {
   // ── BulgarianToto custom errors ─────────────────────────────────────────
   '0x57e25a09': 'Invalid game ID. Choose 5/35 or 6/49.',
@@ -92,15 +92,8 @@ export function formatError(e: any): string {
   // 1. ethers v6 already decoded a custom error from a known ABI.
   const revertName = e?.revert?.name;
   if (revertName) {
-    const friendly = SELECTOR_MESSAGES[
-      // try matching by name → selector lookup table is keyed by selector,
-      // so we just fall through to the args-rendering path below if no match.
-      ''
-    ];
-    if (friendly) return friendly;
     const args = e?.revert?.args;
-    // Map a few common decoded errors to friendly strings even when ethers
-    // already decoded them.
+    // Map common decoded errors to friendly strings.
     const byName: Record<string, string> = {
       ERC20InsufficientAllowance: SELECTOR_MESSAGES['0xfb8f41b2'],
       ERC20InsufficientBalance: SELECTOR_MESSAGES['0xe450d38c'],

@@ -24,8 +24,3 @@ export function fmtUsdcSmart(value: string | number | bigint | null | undefined)
   if (Math.abs(n) >= 0.01) return fmtUsdc(n, 4);
   return '< 0.01';
 }
-
-export function fmtPct(numerator: number, denominator: number, decimals = 2): string {
-  if (!denominator) return '0%';
-  return `${((numerator / denominator) * 100).toFixed(decimals)}%`;
-}

@@ -23,10 +23,8 @@ abstract contract BulgarianTotoLpVault is BulgarianTotoLottery {
     /// @return shares The number of LP shares minted.
     function depositLp(uint256 amount) external nonReentrant whenNotPaused returns (uint128 shares) {
         if (amount == 0) revert LpAmountZero();
-        // Bootstrap gate: do not accept LP capital until the prize pool has been seeded by
-        // ticket revenue / donations to LP_MIN_POOL. Once the threshold is crossed it stays
-        // crossed for any prior round (`availablePool` is monotonic vs. claims, but those are
-        // accounted out of the running pool, so this is a snapshot check).
+        // Bootstrap gate: only accept LP capital once the prize pool has been
+        // seeded by ticket revenue / donations to LP_MIN_POOL.
         if (availablePool < LP_MIN_POOL) revert LpPoolBelowThreshold();
 
         uint256 sharesU = amount * (totalLpShares + LP_VIRTUAL_SHARES) / (totalLpAssets + 1);

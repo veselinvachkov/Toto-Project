@@ -31,7 +31,6 @@ contract BulgarianTotoLpTest is Test {
     uint64 internal firstDrawTime;
 
     uint8 constant GAME_5_35 = 0;
-    uint8 constant GAME_6_49 = 1;
 
     function setUp() public {
         usdc = new MockUSDC();
